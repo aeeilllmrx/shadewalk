@@ -1,49 +1,47 @@
-import React, { useEffect, useState } from "react"
-import usePlacesAutocomplete, {
-  getGeocode
-} from "use-places-autocomplete";
+import React, { useEffect, useState } from "react";
+import usePlacesAutocomplete, { getGeocode } from "use-places-autocomplete";
 
 import {
   Combobox,
   ComboboxInput,
   ComboboxPopover,
   ComboboxList,
-  ComboboxOption
-} from "@reach/combobox"
+  ComboboxOption,
+} from "@reach/combobox";
 
-import "@reach/combobox/styles.css"
+import "@reach/combobox/styles.css";
 
-export const Search = ({ callback, name }) => {  
+export const Search = ({ callback, name }) => {
   const {
     ready,
     value,
     suggestions: { status, data },
-    setValue
-  } = usePlacesAutocomplete()
+    setValue,
+  } = usePlacesAutocomplete();
 
-  const [latLng, setLatLng] = useState({})
+  const [latLng, setLatLng] = useState({});
 
   useEffect(() => {
-    callback(latLng)
-  }, [latLng])
+    callback(latLng);
+  }, [latLng]);
 
   const handleInput = (e) => {
-    setValue(e.target.value)
-  }
+    setValue(e.target.value);
+  };
 
   const handleSelect = (description) => {
-    setValue(description, false)
+    setValue(description, false);
 
-    getGeocode({address: description})
+    getGeocode({ address: description })
       .then((results) => {
-        const lat = results[0].geometry.location.lat()
-        const lng = results[0].geometry.location.lng()
-        setLatLng({lat: lat, lng: lng})
+        const lat = results[0].geometry.location.lat();
+        const lng = results[0].geometry.location.lng();
+        setLatLng({ lat: lat, lng: lng });
       })
       .catch((error) => {
         console.log("Error: ", error);
       });
-  }
+  };
 
   return (
     <div className="container">
@@ -67,5 +65,5 @@ export const Search = ({ callback, name }) => {
         </Combobox>
       </div>
     </div>
-  )
-}
+  );
+};
